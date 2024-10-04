@@ -8,8 +8,8 @@ export const Route = createFileRoute('/')({
 
 export default function LoginPage(){
   return (
-    <section className="grid justify-center items-center h-screen">
-      <div className=" flex justify-center w-96 h-fit">
+    <section className="grid items-center h-screen">
+      <div className=" flex justify-center">
         <FormComponent />
       </div>
     </section>
