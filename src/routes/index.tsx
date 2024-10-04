@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-// import * as React from "react"
+import * as React from "react"
 import { FormComponent } from '../components/FormComponent'
-import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/')({
   component: () => <LoginPage />,
