@@ -64,3 +64,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/fonts/Inter.ttf");
+  font-display: swap;
+}
+
+html{
+  font-family: Inter;
+  height: 100%;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  font-family: Inter var, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  -webkit-tap-highlight-color: transparent;
+}

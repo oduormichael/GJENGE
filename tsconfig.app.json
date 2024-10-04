@@ -1,13 +1,14 @@
 {
-    "compilerOptions": {
-      // ...
-      "baseUrl": ".",
-      "paths": {
-        "@/*": [
-          "./src/*"
-        ]
-      }
-      // ...
-    }
-  }
-  
+  "compilerOptions": {
+    "target": "esnext", // Set to your desired ECMAScript version
+    "module": "esnext", // Set to your desired module system
+    "jsx": "react-jsx", // Change to "react" if using React < 17
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "strict": true // Enable strict mode (optional)
+  },
+  "include": ["src/**/*"], // Include your source files
+  "exclude": ["node_modules"] // Exclude node_modules
+}
