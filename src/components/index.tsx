@@ -4,6 +4,7 @@ import { Resizable } from "./Resizable";
 import { Sidebar } from "./Sidebar";
 import { BreadcrumbComponent } from "./Breadcrumb";
 import { Header } from "./Header";
+import { CardComponent } from "./Card";
 
 export {
   FormComponent,
@@ -12,4 +13,5 @@ export {
   Sidebar,
   BreadcrumbComponent,
   Header,
+  CardComponent,
 };
