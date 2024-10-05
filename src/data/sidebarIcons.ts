@@ -5,18 +5,23 @@ export const sidebarIconsData = [
     text: "Dashboard",
   },
   {
-    location: "profile",
+    location: "users",
     src: "https://cdn4.iconfinder.com/data/icons/basic-ui-glyph-free/24/User-256.png",
-    text: "Profile",
+    text: "Users",
   },
   {
-    location: "settings",
-    src: "https://cdn4.iconfinder.com/data/icons/basic-ui-glyph-free/24/Settings-256.png",
-    text: "Settings",
+    location: "orders",
+    src: "https://cdn4.iconfinder.com/data/icons/logistic-57/1024/clipboard-256.png",
+    text: "Orders",
   },
   {
-    location: "notifications",
-    src: "https://cdn4.iconfinder.com/data/icons/basic-ui-glyph-free/24/Bel-256.png",
-    text: "Notifications",
+    location: "products",
+    src: "https://cdn0.iconfinder.com/data/icons/cosmo-layout/40/firewall-256.png",
+    text: "Products",
+  },
+  {
+    location: "feedback",
+    src: "https://cdn1.iconfinder.com/data/icons/jumpicon-marketing-glyph/32/-_Review-Feedback-Like-Thumbs_Up-Satisfaction-256.png",
+    text: "Feedback",
   },
 ];

@@ -5,6 +5,7 @@ import { Sidebar } from "./Sidebar";
 import { BreadcrumbComponent } from "./Breadcrumb";
 import { Header } from "./Header";
 import { CardComponent } from "./Card";
+import { TableComponent } from "./TableComponent";
 
 export {
   FormComponent,
@@ -14,4 +15,5 @@ export {
   BreadcrumbComponent,
   Header,
   CardComponent,
+  TableComponent,
 };

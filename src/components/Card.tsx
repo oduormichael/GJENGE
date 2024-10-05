@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 
 export function CardComponent({ iconSrc, title, statistic, moreDetails }) {
   return (
-    <Card className="w-[350px] shadow-none">
+    <Card className="shadow-none">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardDescription className="font-normal px-1">
