@@ -79,49 +79,56 @@ export function FormComponent() {
   }
 
   return (
-    <Form {...form} >
+    <div className="w-max h-full grid justify-center ">
       <Toaster />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-max space-y-6">
-        <h1 className="text-4xl font-bold leading-10">Administrator Sign-In</h1>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="you@example.com"
-                  {...field}
-                  className="h-11 px-5"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-max space-y-6"
+        >
+          <h1 className="text-4xl font-bold leading-10">
+            Administrator Sign-In
+          </h1>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="you@example.com"
+                    {...field}
+                    className="h-11 px-5"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Your password"
-                  {...field}
-                  className="h-11 px-5"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="w-full h-11">
-          Submit
-        </Button>
-      </form>
-    </Form>
+          <FormField
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Your password"
+                    {...field}
+                    className="h-11 px-5"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full h-11">
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
