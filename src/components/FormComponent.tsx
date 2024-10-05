@@ -6,7 +6,7 @@ import { z } from "zod";
 import * as React from "react";
 import { supabase } from "@/backend/client.js";
 import { useToast } from "@/hooks/use-toast";
-import { Toaster } from "@/components/ui/Toaster";
+import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/hooks/use-toast";
@@ -79,7 +79,7 @@ export function FormComponent() {
   }
 
   return (
-    <Form {...form} className="w-max">
+    <Form {...form} >
       <Toaster />
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-max space-y-6">
         <h1 className="text-4xl font-bold leading-10">Administrator Sign-In</h1>
