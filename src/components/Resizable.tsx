@@ -11,13 +11,13 @@ export function Resizable({ sidebar, main }) {
       direction="horizontal"
       className="min-h-screen overflow-auto"
     >
-      <ResizablePanel defaultSize={25}>
-        <div className="p-6">
-          <span className="font-semibold">{sidebar}</span>
+      <ResizablePanel defaultSize={15}>
+        <div className="p-6 h-full">
+          {sidebar}
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={75}>
+      <ResizablePanel defaultSize={85}>
         <div className="p-6">
           <span className="font-semibold">{main}</span>
         </div>
