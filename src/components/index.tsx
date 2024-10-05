@@ -1,3 +1,4 @@
 import { FormComponent } from "./FormComponent";
+import { ChartComponent } from "./ChartComponent";
 
-export {FormComponent}
+export { FormComponent, ChartComponent };
