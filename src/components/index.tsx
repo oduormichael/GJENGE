@@ -6,6 +6,7 @@ import { BreadcrumbComponent } from "./Breadcrumb";
 import { Header } from "./Header";
 import { CardComponent } from "./Card";
 import { BestSeller } from "./BestSeller";
+import {DialogComponent} from "./Dialog"
 
 export {
   FormComponent,
@@ -16,4 +17,5 @@ export {
   Header,
   CardComponent,
   BestSeller,
+  DialogComponent,
 };
