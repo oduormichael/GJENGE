@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import * as React from 'react'
-import { Sidebar, Header, TableComponent } from '@/components'
+import { Sidebar, Header } from '@/components'
+import { FeedbackTable } from '@/components/tables/Feedback'
 
 export const Route = createFileRoute('/feedback')({
   component: () => <ViewFeedback />,
@@ -23,7 +24,7 @@ function ViewFeedback() {
       <div className="mt-8">
         <h1 className="text-3xl leading-9">User Feedback</h1>
       </div>
-      <TableComponent />
+      <FeedbackTable />
     </div>
   )
 }

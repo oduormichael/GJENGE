@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import * as React from 'react'
 import { Sidebar, Header, TableComponent } from '@/components'
+import { OrdersTable } from '@/components/tables/Orders'
 
 export const Route = createFileRoute('/orders')({
   component: () => <ManageOrders />,
@@ -23,7 +24,7 @@ function ManageOrders() {
       <div className="mt-8">
         <h1 className="text-3xl leading-9">Manage Orders</h1>
       </div>
-      <TableComponent />
+      <OrdersTable />
     </div>
   )
 }
