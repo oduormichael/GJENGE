@@ -5,6 +5,8 @@ import { CardComponent } from '@/components';
 import {Button} from "@/components/ui"
 import { CardData } from "@/data";
 import { DividerHorizontalIcon } from '@radix-ui/react-icons';
+import { fetchUsers } from '@/api';
+import { Card } from '@/components/ui/card';
 
 export const Route = createFileRoute('/dashboard')({
   component: () => <AdminDashboard />,
@@ -17,8 +19,21 @@ function AdminDashboard() {
     </>
   );
 }
+async function updateTotalUsers() {
+  const user_count = await fetchUsers();
+  console.log(user_count.length);
+  return user_count.length;
+}
 
 function MainSection() {
+  const [cardData, setCardData] = React.useState([]);
+  React.useEffect(() => {
+    setCardData(CardData);
+    updateTotalUsers().then((totalUsers) => {
+      CardData[0].statistic = totalUsers;
+      setCardData([...CardData]);
+    });
+  }, []);
   return (
     <div className="flex flex-col gap-4 pt-4">
       <section className="flex gap-2 items-center px-6">

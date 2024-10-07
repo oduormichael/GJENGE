@@ -24,7 +24,7 @@ export function BreadcrumbComponent({ location = "" }) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink>
-                <Link to={location} className="font-medium">{location}</Link>
+                <Link to={""} className="font-medium">{location}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </>
