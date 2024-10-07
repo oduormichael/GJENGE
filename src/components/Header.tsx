@@ -23,7 +23,7 @@ export function Header({location = ""}) {
     return (
       <div className="flex justify-between items-center w-full">
         <BreadcrumbComponent location={location} />
-        <section className="flex items-center">
+        <section className="flex items-center gap-2">
           <NavigationMenuComponent />
           <AvatarDemo />
         </section>
@@ -49,19 +49,15 @@ export function NavigationMenuComponent() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="border-none">
           <NavigationMenuTrigger>Administrator</NavigationMenuTrigger>
-          <NavigationMenuContent className="shadow-none">
-            <ul className="grid w-max gap-3 px-4 w-44 shadow-none">
-              <Link to="/" className="py-4 text-left flex items-center gap-2">
-                <img
-                  src="https://cdn0.iconfinder.com/data/icons/ui-ux-kit/100/logout-256.png"
-                  alt=""
-                  className="w-6"
-                />
-                <span>Logout</span>
-              </Link>
-            </ul>
+          <NavigationMenuContent className="shadow-none bg-zinc-100 ">
+            <Link
+              to="/"
+              className="py-2 px-4 flex items-center gap-2 w-36 font-medium text-sm"
+            >
+              <span>&#8603;  Logout</span>
+            </Link>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
