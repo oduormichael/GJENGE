@@ -56,7 +56,7 @@ export function NavigationMenuComponent() {
               to="/"
               className="py-2 px-4 flex items-center gap-2 w-36 font-medium text-sm"
             >
-              <span>&#8603;  Logout</span>
+              <span>Logout &#8611;</span>
             </Link>
           </NavigationMenuContent>
         </NavigationMenuItem>

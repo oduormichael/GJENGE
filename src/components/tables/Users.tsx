@@ -126,7 +126,7 @@ export const columns: ColumnDef<User>[] = [
 
 export function UsersTable(data) {
   const filteredData = data.data;
-  console.log(filteredData);
+  // console.log(filteredData);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
