@@ -3,7 +3,8 @@ import { BreadcrumbComponent } from "@/components"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AlignVerticalDistributeStart } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import {Ceo} from "@/assets/images"
+import { Ceo } from "@/assets/images"
+import { Button } from "./ui";
 
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import {
@@ -42,6 +43,13 @@ export function AvatarDemo() {
 
 "use client";
 
+import {supabase} from "@/backend/client"
+async function handle_logout() {
+  const { error } = await supabase.auth.signOut();
+  if (error) console.error("Error logging out:", error.message);
+  window.location.href = "/";
+}
+
 
 import { cn } from "@/lib/utils";
 
@@ -52,12 +60,12 @@ export function NavigationMenuComponent() {
         <NavigationMenuItem className="border-none">
           <NavigationMenuTrigger>Administrator</NavigationMenuTrigger>
           <NavigationMenuContent className="shadow-none bg-zinc-100 ">
-            <Link
-              to="/"
+            <Button
+              onClick={handle_logout}
               className="py-2 px-4 flex items-center gap-2 w-36 font-medium text-sm"
             >
               <span>Logout &#8611;</span>
-            </Link>
+            </Button>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

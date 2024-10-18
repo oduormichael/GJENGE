@@ -1,82 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { Sidebar, Header, DialogComponent } from "@/components";
-import { ProductCard } from "@/components/ui";
+import { ProductCard, ProductSkeleton } from "@/components/ui";
 import { ProductTable } from "@/components/tables/Product";
 import { Switch } from "@/components/ui/switch";
-
-const products = [
-  {
-    id: 1,
-    name: "Bricks",
-    href: "#",
-    imageSrc:
-      "https://images.pexels.com/photos/19688828/pexels-photo-19688828/free-photo-of-close-up-of-man-building-bricks-wall.jpeg?auto=compress&cs=tinysrgb&w=400",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/product-page-01-related-product-02.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/product-page-01-related-product-03.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/product-page-01-related-product-04.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/product-page-01-related-product-04.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/product-page-01-related-product-04.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/plus/img/ecommerce-images/product-page-01-related-product-04.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "Ksh 35",
-    color: "Black",
-  },
-];
+import { fetchProducts } from "@/api";
 
 export const Route = createFileRoute("/products")({
   component: () => <ProductPage />,
@@ -84,6 +12,14 @@ export const Route = createFileRoute("/products")({
 
 function ProductPage() {
   const [isGridLayout, setIsGridLayout] = React.useState(true);
+  const [products, setProducts] = React.useState([]);
+  
+  // fetch products
+  async function productsFetcher() {
+    setProducts(await fetchProducts());
+  }
+  productsFetcher();
+  
   return (
     <div className="flex flex-col gap-4 px-6 pt-4">
       <section className="flex gap-2 items-center">
@@ -104,25 +40,35 @@ function ProductPage() {
             trigger={<Button variant="outline">Add Product</Button>}
           />
           <Switch
-            onclick={() => {
+            onClick={() => {
               setIsGridLayout(!isGridLayout);
             }}
           />
         </div>
       </div>
       {isGridLayout ? (
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-        </div>
+        products.length === 0 ? (
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            <ProductSkeleton />
+            <ProductSkeleton />
+            <ProductSkeleton />
+            <ProductSkeleton />
+          </div>
+        ) : (
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {products.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+          </div>
+        )
       ) : (
         <ProductTable data={products} />
       )}
     </div>
   );
 }
-import { Button } from "@/components/ui/button"
+
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -131,9 +77,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function DialogDemo() {
   return (
@@ -175,5 +121,5 @@ export function DialogDemo() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

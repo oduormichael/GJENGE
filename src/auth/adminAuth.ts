@@ -6,12 +6,11 @@ import { toast } from "@/hooks/use-toast";
 export async function onSubmit(data: z.infer<typeof FormSchema>) {
   console.log(data);
   async function authenticateAdmin(email: any, password: any) {
-    const { data, error } = await supabase
-      .from("admin")
-      .select("*")
-      .eq("email", email)
-      .eq("password", password) // Note: It's recommended to store hashed passwords and use a secure method for authentication.
-      .single(); // Fetch a single row
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
 
     if (error) {
       console.error("Authentication error:", error);

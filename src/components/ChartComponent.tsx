@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import {chartData} from "@/data"
-import {chartConfig} from "@/config"
+import { chartConfig } from "@/config"
+import { fetchSales } from "@/api"
 
 import {
   Card,
@@ -13,25 +13,35 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const description = "An interactive bar chart"
 
-
 export function ChartComponent() {
+  const [chartData, setChartData] = React.useState([]);
   const [activeChart, setActiveChart] =
     React.useState<keyof typeof chartConfig>("trashRecycled");
+  const [loading, setLoading] = React.useState(true);
+
+  async function FetchSalesData() {
+    const sales = await fetchSales();
+    setChartData(sales);
+    setLoading(false);
+  }
+  React.useEffect(() => {
+    FetchSalesData();
+  }, []);
 
   const total = React.useMemo(
     () => ({
-      trashRecycled: chartData.reduce((acc, curr) => acc + curr.trashRecycled, 0),
-      bricksSold: chartData.reduce((acc, curr) => acc + curr.bricksSold, 0),
+      trashRecycled: chartData.reduce((acc, curr) => acc + curr.trash_recycled, 0),
+      bricksSold: chartData.reduce((acc, curr) => acc + curr.bricks_sold, 0),
     }),
-    []
+    [chartData]
   );
 
   return (
@@ -56,60 +66,68 @@ export function ChartComponent() {
                 <span className="text-xs text-muted-foreground">
                   {chartConfig[chart].label}
                 </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
+                {loading ? (
+                  <Skeleton className="h-6 w-16 sm:h-8 sm:w-24" />
+                ) : (
+                  <span className="text-lg font-bold leading-none sm:text-3xl">
+                    {total[key as keyof typeof total].toLocaleString()}
+                  </span>
+                )}
               </button>
             );
           })}
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
+        {loading ? (
+          <Skeleton className="h-[250px] w-full" />
+        ) : (
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[250px] w-full"
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
+            <BarChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
               }}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    });
-                  }}
-                />
-              }
-            />
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
-          </BarChart>
-        </ChartContainer>
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="views"
+                    labelFormatter={(value) => {
+                      return new Date(value).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      });
+                    }}
+                  />
+                }
+              />
+              <Bar dataKey={activeChart === "trashRecycled" ? "trash_recycled" : "bricks_sold"} fill={`var(--color-${activeChart})`} />
+            </BarChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
