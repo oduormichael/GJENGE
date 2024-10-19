@@ -10,7 +10,7 @@ export const Route = createFileRoute('/')({
 export default function LoginPage(){
   return (
     <section className="flex h-screen overflow-y-hidden">
-      <div className="w-1/3">
+      <div className="w-1/3 bg-slate-100">
         <img src={MainImage} alt="" className="h-[100%] object-cover" />
       </div>
       <div className="grid align-center pl-40 relative w-full">

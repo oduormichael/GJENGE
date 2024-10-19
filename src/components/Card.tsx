@@ -7,14 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export function CardComponent({ iconSrc, title, statistic, moreDetails }) {
+export function CardComponent({ iconSrc, title, statistic, moreDetails, percentage = 0 }) {
   return (
     <Card className="shadow-none border-none">
       <CardHeader className="divide-y">
-        <CardTitle className="text-2xl">{statistic}</CardTitle>
+        <CardTitle className="text-2xl">{statistic === 0 ? <Skeleton className="w-2/4 h-10" /> : statistic}</CardTitle>
         <div className="flex justify-between items-center py-2 font-medium text-sm">
           <p className="text-gray-500">{title}</p>
-          <p className="text-green-600">&uarr; 25%</p>
+          <p className="text-green-600 flex items-center gap-2">&uarr;{percentage === 0 ? <Skeleton className="w-4 h-4" /> : percentage }% </p>
         </div>
       </CardHeader>
     </Card>

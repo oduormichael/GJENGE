@@ -81,6 +81,7 @@ function MainSection() {
                 title={card.title}
                 statistic={card.statistic}
                 moreDetails={card.moreDetails}
+		percentage={10}
               />
               ) : (
               <div className="animate-pulse flex space-x-4">
