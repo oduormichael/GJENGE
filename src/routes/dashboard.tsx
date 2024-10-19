@@ -56,7 +56,7 @@ function MainSection() {
   }, []);
   return (
     <div className="flex flex-col gap-4 pt-4">
-      <section className="flex gap-2 items-center px-6">
+      <section className="flex gap-2 items-center px-6 sticky top-0 bg-background py-4 z-10 border-b-[1px]">
         <Sidebar
           trigger={
             <img
