@@ -15,7 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button, Skeleton } from "@/components/ui";
+import { Button, Skeleton, Badge } from "@/components/ui";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -86,6 +86,17 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => <div>{row.getValue("role")}</div>,
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div>
+        {row.getValue("status") === "active" && <Badge variant="default" className="rounded-full bg-green-900">Active</Badge>}
+        {row.getValue("status") === "deactivated" && <Badge variant="destructive" className="rounded-full">Deactivated</Badge>}
+        {row.getValue("status") === "banned" && <Badge variant="destructive" className="rounded-full">Banned</Badge>}
+      </div>
+    ),
+  },
+  {
     accessorKey: "date_created",
     header: "Date Created",
     cell: ({ row }) => {
@@ -115,8 +126,16 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Activate</DropdownMenuItem>
-            <DropdownMenuItem>Ban User</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Badge variant="default" className="rounded-full bg-green-900">Activate</Badge>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Badge variant="destructive" className="rounded-full">Deactivate</Badge>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Badge variant="destructive" className="rounded-full">Ban User</Badge>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
