@@ -9,13 +9,13 @@ export const Route = createFileRoute('/orders')({
 })
 
 function ManageOrders() {
-  const [orders, setOrders] = React.useState([])
+  const [orders, setOrders] = React.useState([]);
   React.useEffect(() => {
-    fetchOrders().then((data) => setOrders(data))
-  }, [])
+    fetchOrders().then((data) => setOrders(data));
+  }, []);
   return (
-    <div className="flex flex-col gap-4 px-6 pt-4">
-      <section className="flex gap-2 items-center">
+    <div className="flex flex-col bg-gray-50 ">
+      <section className="flex gap-2 items-center sticky px-4 top-0 bg-background py-4 z-10 border-b-[1px]">
         <Sidebar
           trigger={
             <img
@@ -26,10 +26,17 @@ function ManageOrders() {
         />
         <Header location="Orders" />
       </section>
-      <div className="mt-8">
-        <h1 className="text-3xl leading-9">Manage Orders</h1>
-      </div>
-      <OrdersTable data={orders}  />
+      <section className="px-6 pt-24 grid gap-10">
+        <div>
+          <h1 className="text-5xl font-bold text-neutral-300 leading-[2px]">
+            Orders
+          </h1>
+          <p className="font-medium leading-9 bg-white w-max px-2 rounded-sm">
+            Manage Orders, activate, deactivate &nbsp;and more
+          </p>
+        </div>
+      </section>
+      <OrdersTable data={orders} />
     </div>
-  )
+  );
 }
