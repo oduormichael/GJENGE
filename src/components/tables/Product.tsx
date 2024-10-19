@@ -15,7 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button, Skeleton } from "@/components/ui";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -37,78 +37,86 @@ import {
 } from "@/components/ui/table";
 
 export type Product = {
-    name: string;
-    href: string;
-    imageSrc: string;
+    product_name: string;
+    description: string;
+    image: string;
     imageAlt: string;
     price: string;
     color: string;
 };
 
 export const columns: ColumnDef<Product>[] = [
-    {
-        accessorKey: "name",
-        header: "Name",
-        cell: ({ row }) => <div>{row.getValue("name")}</div>,
-    },
-    {
-        accessorKey: "href",
-        header: "Link",
-        cell: ({ row }) => (
-            <a href={row.getValue("href")} target="_blank" rel="noopener noreferrer">
-                {row.getValue("href")}
-            </a>
-        ),
-    },
-    {
-        accessorKey: "imageSrc",
-        header: "Image",
-        cell: ({ row }) => (
-            <img src={row.getValue("imageSrc")} alt={row.getValue("imageAlt")} className="w-16 h-16 object-cover" />
-        ),
-    },
-    {
-        accessorKey: "price",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                Price
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => <div>{row.getValue("price")}</div>,
-    },
-    {
-        accessorKey: "color",
-        header: "Color",
-        cell: ({ row }) => <div>{row.getValue("color")}</div>,
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const product = row.original;
+  {
+    accessorKey: "product_name",
+    header: "Product Name",
+    cell: ({ row }) => <div>{row.getValue("product_name")}</div>,
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => (
+      <a
+        href={row.getValue("description")}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {row.getValue("description")}
+      </a>
+    ),
+  },
+  {
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ row }) => (
+      <img
+        src={row.getValue("image")}
+        alt={row.getValue("image")}
+        className="w-16 h-16 object-cover rounded-lg"
+      />
+    ),
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Price
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <div>{row.getValue("price")}</div>,
+  },
+  {
+    accessorKey: "color",
+    header: "Color",
+    cell: ({ row }) => <div>{row.getValue("color")}</div>,
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const product = row.original;
 
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Add to Cart</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View Details</DropdownMenuItem>
+            <DropdownMenuItem>Add to Cart</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
+  },
 ];
 
 export function ProductTable(data) {
@@ -145,10 +153,12 @@ export function ProductTable(data) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter produts..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter products..."
+          value={
+            (table.getColumn("product_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("product_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -179,7 +189,7 @@ export function ProductTable(data) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -222,7 +232,12 @@ export function ProductTable(data) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <div className="grid gap-2">
+                    <Skeleton className="h-8" />
+                    <Skeleton className="h-8" />
+                    <Skeleton className="h-8" />
+                    <Skeleton className="h-8" />
+                  </div>
                 </TableCell>
               </TableRow>
             )}

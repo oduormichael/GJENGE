@@ -16,9 +16,11 @@ function ProductPage() {
   
   // fetch products
   async function productsFetcher() {
-    setProducts(await fetchProducts());
+    setProducts(await fetchProducts(10)); // Adjust the count as needed
   }
-  productsFetcher();
+  React.useEffect(() => {
+    productsFetcher();
+  }, []);
   
   return (
     <div className="flex flex-col gap-4 px-6 pt-4">
@@ -40,7 +42,7 @@ function ProductPage() {
             trigger={<Button variant="outline">Add Product</Button>}
           />
           <Switch
-            onClick={() => {
+            onclick={() => {
               setIsGridLayout(!isGridLayout);
             }}
           />
