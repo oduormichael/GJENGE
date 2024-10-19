@@ -14,9 +14,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { fetchUser, fetchProduct } from "@/api";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button, Skeleton } from "@/components/ui";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -42,7 +42,7 @@ export type User = {
   last_name: string;
   email: string;
   phone_number: string;
-  role: string;
+  image: string;
   date_created: string;
 };
 
@@ -55,12 +55,38 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "first_name",
     header: "First Name",
-    cell: ({ row }) => <div>{row.getValue("first_name")}</div>,
+    cell: ({ row }) => {
+      const [firstName, setFirstName] = React.useState<string | null>(null);
+
+      React.useEffect(() => {
+        const fetchFirstName = async () => {
+          const user = await fetchUser(row.getValue("user_id"));
+          setFirstName(user[0].first_name);
+          console.log(`user: ${user}`);
+        };
+        fetchFirstName();
+      }, [row]);
+
+      return <div>{firstName}</div>;
+    },
   },
   {
     accessorKey: "last_name",
     header: "Last Name",
-    cell: ({ row }) => <div>{row.getValue("last_name")}</div>,
+    cell: ({ row }) => {
+      const [lastName, setLastname] = React.useState<string | null>(null);
+
+      React.useEffect(() => {
+        const fetchLastname = async () => {
+          const user = await fetchUser(row.getValue("user_id"));
+          setLastname(user[0].last_name);
+          console.log(`user: ${user}`);
+        };
+        fetchLastname();
+      }, [row]);
+
+      return <div>{lastName}</div>;
+    },
   },
   {
     accessorKey: "email",
@@ -73,23 +99,64 @@ export const columns: ColumnDef<User>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => {
+      const [email, setEmail] = React.useState<string | null>(null);
+
+      React.useEffect(() => {
+        const fetchEmail = async () => {
+          const user = await fetchUser(row.getValue("user_id"));
+          setEmail(user[0].email);
+        };
+        fetchEmail();
+      }, [row]);
+
+      return <div>{email}</div>;
+    },
   },
   {
     accessorKey: "phone_number",
     header: "Phone Number",
-    cell: ({ row }) => <div>{row.getValue("phone_number")}</div>,
+    cell: ({ row }) => {
+      const [phoneNumber, setPhoneNumber] = React.useState<string | null>(null);
+
+      React.useEffect(() => {
+        const fetchPhoneNumber = async () => {
+          const user = await fetchUser(row.getValue("user_id"));
+          setPhoneNumber(user[0].phone_number);
+        };
+        fetchPhoneNumber();
+      }, [row]);
+
+      return <div>{phoneNumber}</div>;
+    },
   },
   {
-    accessorKey: "role",
-    header: "Role",
-    cell: ({ row }) => <div>{row.getValue("role")}</div>,
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ row }) => {
+      const [product, setProduct] = React.useState<string | null>(null);
+
+      React.useEffect(() => {
+        const fetchProductImage = async () => {
+          const user = await fetchProduct(row.getValue("product_id"));
+          setProduct(user[0].image);
+          console.log(`Product Image: ${row.getValue("product_id")}`);
+        };
+        fetchProductImage();
+      }, [row]);
+
+      return (
+        <div>
+          <img src={product} className="w-10 h-10 rounded-md" />
+        </div>
+      );
+    },
   },
   {
     accessorKey: "date_created",
     header: "Date Created",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("date_created"));
+      const date = new Date(row.getValue("order_date"));
       const formattedDate = date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
@@ -235,7 +302,12 @@ export function OrdersTable(data) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <div className="grid gap-2">
+                    <Skeleton className="h-8" />
+                    <Skeleton className="h-8" />
+                    <Skeleton className="h-8" />
+                    <Skeleton className="h-8" />
+                  </div>
                 </TableCell>
               </TableRow>
             )}
