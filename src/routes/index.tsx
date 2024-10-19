@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-// import * as React from "react"
-import { FormComponent } from '../components/FormComponent'
-import { Button } from '@/components/ui/button'
+import * as React from "react"
+import { FormComponent } from '@/components'
+import {Logo, MainImage} from "@/assets/images"
 
 export const Route = createFileRoute('/')({
   component: () => <LoginPage />,
@@ -9,9 +9,13 @@ export const Route = createFileRoute('/')({
 
 export default function LoginPage(){
   return (
-    <section className="grid justify-center items-center h-screen">
-      <div className=" flex justify-center w-96 h-fit">
-        <FormComponent />
+    <section className="flex h-screen overflow-y-hidden">
+      <div className="w-1/3 bg-slate-100">
+        <img src={MainImage} alt="" className="h-[100%] object-cover" />
+      </div>
+      <div className="grid align-center pl-40 relative w-full">
+        <img src={Logo} alt="" className="w-14 absolute top-10 left-10" />
+        <FormComponent />        
       </div>
     </section>
   );
