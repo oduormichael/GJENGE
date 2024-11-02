@@ -50,7 +50,7 @@ function MainSection() {
       setCardData([...CardData]);
     });
     updateTotalOrders().then((totalOrders) => {
-      CardData[2].statistic = totalOrders;
+      CardData[1].statistic = totalOrders;
       setCardData([...CardData]);
     });
   }, []);

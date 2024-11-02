@@ -131,38 +131,33 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "image",
-    header: "Image",
+    accessorKey: "product",
+    header: "Product",
     cell: ({ row }) => {
-      const [product, setProduct] = React.useState<string | null>(null);
+      const [image, setImage] = React.useState<string | null>(null);
 
       React.useEffect(() => {
-        const fetchProductImage = async () => {
-          const user = await fetchProduct(row.getValue("product_id"));
-          setProduct(user[0].image);
-          console.log(`Product Image: ${row.getValue("product_id")}`);
+        const fetchImage = async () => {
+          try {
+            const user = await fetchUser(row.getValue("user_id"));
+            if (user && user.length > 0) {
+              setImage(user[0].image);
+            }
+          } catch (error) {
+            console.error("Error fetching user image:", error);
+          }
         };
-        fetchProductImage();
+        fetchImage();
       }, [row]);
 
-      return (
-        <div>
-          <img src={product} className="w-10 h-10 rounded-md" />
-        </div>
-      );
+      return <div>{image}</div>;
     },
   },
   {
     accessorKey: "date_created",
     header: "Date Created",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("order_date"));
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      return <div>{formattedDate}</div>;
+      return <div>{row.getValue("order_date")}</div>;
     },
   },
   {

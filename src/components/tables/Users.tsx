@@ -38,6 +38,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ToastAction } from "@radix-ui/react-toast";
+import { AddUserDialog } from "../AddUserDialog";
 
 export type User = {
   user_id: string;
@@ -362,6 +363,7 @@ export function UsersTable(data) {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <AddUserDialog dialogTrigger={<Button>Add User</Button>} />
         </section>
       </div>
       <div className="rounded-md px-2">
