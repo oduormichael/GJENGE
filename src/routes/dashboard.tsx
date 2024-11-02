@@ -1,22 +1,30 @@
-import { createFileRoute } from '@tanstack/react-router'
-import * as React from "react"
-import {ChartComponent, Resizable, Sidebar, Header, BestSeller} from "@/components"
-import { CardComponent } from '@/components';
-import {Button} from "@/components/ui"
+import { createFileRoute, Link } from "@tanstack/react-router";
+import * as React from "react";
+import {
+  ChartComponent,
+  Resizable,
+  Sidebar,
+  Header,
+  BestSeller,
+} from "@/components";
+import { CardComponent } from "@/components";
+import { Button } from "@/components/ui";
 import { CardData } from "@/data";
-import { fetchUsers, fetchOrders, fetchLoginStatus } from '@/api';
-import { Card } from '@/components/ui/card';
+import { fetchUsers, fetchOrders, fetchLoginStatus } from "@/api";
+import { Card } from "@/components/ui/card";
+import { TableComponent } from "@/components/tables/Users";
+import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute("/dashboard")({
   component: () => <AdminDashboard />,
-})
+});
 
 function AdminDashboard() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   fetchLoginStatus().then(() => {
     setIsLoggedIn(true);
-  })
+  });
 
   if (!isLoggedIn) {
     return <div>Loading...</div>;
@@ -41,8 +49,13 @@ async function updateTotalOrders() {
   return user_count.length;
 }
 
+async function fetchUsersWithLimit() {
+  return fetchUsers().then((users) => users.slice(0, 4));
+}
+
 function MainSection() {
   const [cardData, setCardData] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
   React.useEffect(() => {
     setCardData(CardData);
     updateTotalUsers().then((totalUsers) => {
@@ -52,6 +65,9 @@ function MainSection() {
     updateTotalOrders().then((totalOrders) => {
       CardData[1].statistic = totalOrders;
       setCardData([...CardData]);
+    });
+    fetchUsersWithLimit().then((limitedUsers) => {
+      setUsers(limitedUsers);
     });
   }, []);
   return (
@@ -75,25 +91,25 @@ function MainSection() {
           {CardData.map((card, index) => (
             <div className="w-1/3">
               {cardData.length > 0 ? (
-              <CardComponent
-                key={index}
-                iconSrc={card.src}
-                title={card.title}
-                statistic={card.statistic}
-                moreDetails={card.moreDetails}
-		percentage={10}
-              />
+                <CardComponent
+                  key={index}
+                  iconSrc={card.src}
+                  title={card.title}
+                  statistic={card.statistic}
+                  moreDetails={card.moreDetails}
+                  percentage={10}
+                />
               ) : (
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-gray-200 h-12 w-12"></div>
-                <div className="flex-1 space-y-4 py-1">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 rounded"></div>
-                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                <div className="animate-pulse flex space-x-4">
+                  <div className="rounded-full bg-gray-200 h-12 w-12"></div>
+                  <div className="flex-1 space-y-4 py-1">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    </div>
+                  </div>
                 </div>
-                </div>
-              </div>
               )}
             </div>
           ))}
@@ -106,6 +122,27 @@ function MainSection() {
       <div className="pb-16 pt-4 ">
         <hr />
       </div>
+      <section className="px-4 grid gap-6">
+        <div className="flex justify-between">
+          <div>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+            Manage Users
+          </h2>
+          <p className={"text-sm text-muted-foreground py-2"}>
+            To perform more funtions, head to the users page
+          </p>
+          </div>
+          <Link to="/users">
+            <Button
+              className="text-slate-500 text-sm font-medium"
+              variant="outline"
+            >
+              Users Page &rarr;
+            </Button>
+          </Link>
+        </div>
+        <TableComponent data={users} />
+      </section>
       <section>
         <BestSeller />
       </section>

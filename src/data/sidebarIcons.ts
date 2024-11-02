@@ -19,9 +19,4 @@ export const sidebarIconsData = [
     src: "https://cdn0.iconfinder.com/data/icons/cosmo-layout/40/firewall-256.png",
     text: "Products",
   },
-  {
-    location: "feedback",
-    src: "https://cdn1.iconfinder.com/data/icons/jumpicon-marketing-glyph/32/-_Review-Feedback-Like-Thumbs_Up-Satisfaction-256.png",
-    text: "Feedback",
-  },
 ];

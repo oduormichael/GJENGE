@@ -271,7 +271,6 @@ export const columns: ColumnDef<User>[] = [
 
 export function UsersTable(data) {
   const { toast } = useToast();
-
   const filteredData = data.data;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -281,6 +280,21 @@ export function UsersTable(data) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  const [filterStatus, setFilterStatus] = React.useState("all");
+
+  const toggleFilterStatus = () => {
+    const nextStatus = {
+      all: "active",
+      active: "deactivated",
+      deactivated: "banned",
+      banned: "all",
+    };
+    const newStatus = nextStatus[filterStatus];
+    setFilterStatus(newStatus);
+    table
+      .getColumn("status")
+      ?.setFilterValue(newStatus === "all" ? "" : newStatus);
+  };
   const table = useReactTable({
     data: filteredData,
     columns,
@@ -299,23 +313,6 @@ export function UsersTable(data) {
       rowSelection,
     },
   });
-
-  const [filterStatus, setFilterStatus] = React.useState("all");
-
-  const toggleFilterStatus = () => {
-    const nextStatus = {
-      all: "active",
-      active: "deactivated",
-      deactivated: "banned",
-      banned: "all",
-    };
-    const newStatus = nextStatus[filterStatus];
-    setFilterStatus(newStatus);
-    table
-      .getColumn("status")
-      ?.setFilterValue(newStatus === "all" ? "" : newStatus);
-  };
-
   return (
     <div className="w-full grid bg-white">
       <Toaster />
@@ -392,22 +389,15 @@ export function UsersTable(data) {
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   <div className="grid gap-2">
-                    <Skeleton className="h-8" />
                     <Skeleton className="h-8" />
                     <Skeleton className="h-8" />
                     <Skeleton className="h-8" />
@@ -442,6 +432,99 @@ export function UsersTable(data) {
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function TableComponent(data) {
+  const filteredData = data.data;
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const [filterStatus, setFilterStatus] = React.useState("all");
+
+  const toggleFilterStatus = () => {
+    const nextStatus = {
+      all: "active",
+      active: "deactivated",
+      deactivated: "banned",
+      banned: "all",
+    };
+    const newStatus = nextStatus[filterStatus];
+    setFilterStatus(newStatus);
+    table
+      .getColumn("status")
+      ?.setFilterValue(newStatus === "all" ? "" : newStatus);
+  };
+  const table = useReactTable({
+    data: filteredData,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
+  return (
+    <div className="rounded-md px-2">
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                <div className="grid gap-2">
+                  <Skeleton className="h-8" />
+                  <Skeleton className="h-8" />
+                  <Skeleton className="h-8" />
+                  <Skeleton className="h-8" />
+                </div>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }
