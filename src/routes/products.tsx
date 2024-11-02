@@ -23,8 +23,8 @@ function ProductPage() {
   }, []);
   
   return (
-    <div className="flex flex-col gap-4 px-6 pt-4">
-      <section className="flex gap-2 items-center">
+    <div className="flex flex-col bg-gray-50 ">
+      <section className="flex gap-2 items-center sticky px-4 top-0 bg-background py-4 z-10 border-b-[1px]">
         <Sidebar
           trigger={
             <img
@@ -35,19 +35,24 @@ function ProductPage() {
         />
         <Header location="Products" />
       </section>
-      <div className="mt-10 flex justify-between items-center">
-        <h1 className="text-3xl leading-9">Manage Products</h1>
+      <section className="px-6 pt-24 flex justify-between items-center gap-10">
+        <div>
+          <h1 className="text-5xl font-bold text-neutral-300 leading-[2px]">
+            Products
+          </h1>
+          <p className="font-medium leading-9 bg-white w-max px-2 rounded-sm">
+            View products that are currently listed
+          </p>
+        </div>
         <div className="flex items-center">
-          <DialogComponent
-            trigger={<Button variant="outline">Add Product</Button>}
-          />
           <Switch
             onclick={() => {
               setIsGridLayout(!isGridLayout);
             }}
           />
         </div>
-      </div>
+      </section>
+      <section className="px-6">
       {isGridLayout ? (
         products.length === 0 ? (
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
@@ -66,6 +71,7 @@ function ProductPage() {
       ) : (
         <ProductTable data={products} />
       )}
+      </section>
     </div>
   );
 }

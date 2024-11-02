@@ -16,7 +16,7 @@ export function BestSeller() {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="flex items-end justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Best Sellers
+            View products
           </h2>
           <Link to="/products" className="text-slate-500 text-sm font-medium">
             View All &rarr;
