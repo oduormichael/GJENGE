@@ -14,6 +14,8 @@ import { fetchUsers, fetchOrders, fetchLoginStatus } from "@/api";
 import { Card } from "@/components/ui/card";
 import { TableComponent } from "@/components/tables/Users";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/assets/images";
+
 
 export const Route = createFileRoute("/dashboard")({
   component: () => <AdminDashboard />,
@@ -125,12 +127,12 @@ function MainSection() {
       <section className="px-4 grid gap-6">
         <div className="flex justify-between">
           <div>
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Manage Users
-          </h2>
-          <p className={"text-sm text-muted-foreground py-2"}>
-            To perform more funtions, head to the users page
-          </p>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+              Manage Users
+            </h2>
+            <p className={"text-sm text-muted-foreground py-2"}>
+              To perform more funtions, head to the users page
+            </p>
           </div>
           <Link to="/users">
             <Button
@@ -145,6 +147,18 @@ function MainSection() {
       </section>
       <section>
         <BestSeller />
+      </section>
+      <div className="pt-4">
+        <hr />
+      </div>
+      <section className="px-4 pb-4 flex justify-between">
+        <div className="flex items-center gap-2">
+          <img src={Logo} alt="" className="w-6" />
+          <p>&copy; 2024</p>
+        </div>
+        <div className="flex gap-4">
+          <p className="text-sm text-muted-foreground py-2">GJENGE LTD - Building <b>alternatively</b>, <b>affordably</b> and <b>sustainably</b>.</p>
+        </div>
       </section>
     </div>
   );
