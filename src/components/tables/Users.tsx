@@ -326,14 +326,23 @@ export function UsersTable(data) {
           className="max-w-sm"
         />
         <section className="ml-auto flex gap-2">
-          <Button
-            variant="outline"
-            className="ml-auto"
-            onClick={toggleFilterStatus}
-          >
-            Filter Status:{" "}
-            {filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)}
-          </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Filter Status: {filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {["all", "active", "deactivated", "banned"].map((status) => (
+                <DropdownMenuItem key={status} onClick={() => {
+                  setFilterStatus(status);
+                  table.getColumn("status")?.setFilterValue(status === "all" ? "" : status);
+                }}>
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -389,14 +398,20 @@ export function UsersTable(data) {
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   <div className="grid gap-2">
                     <Skeleton className="h-8" />
                     <Skeleton className="h-8" />
