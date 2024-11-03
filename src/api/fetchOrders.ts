@@ -4,5 +4,6 @@ export async function fetchOrders() {
     if (error) {
         throw error;
     }
+    console.log(`Orders data: ${data}`);
     return data;
 }

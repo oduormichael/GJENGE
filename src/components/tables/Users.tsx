@@ -38,6 +38,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ToastAction } from "@radix-ui/react-toast";
+import { AddUserDialog } from "../AddUserDialog";
 
 export type User = {
   user_id: string;
@@ -270,7 +271,6 @@ export const columns: ColumnDef<User>[] = [
 
 export function UsersTable(data) {
   const { toast } = useToast();
-
   const filteredData = data.data;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -280,6 +280,21 @@ export function UsersTable(data) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  const [filterStatus, setFilterStatus] = React.useState("all");
+
+  const toggleFilterStatus = () => {
+    const nextStatus = {
+      all: "active",
+      active: "deactivated",
+      deactivated: "banned",
+      banned: "all",
+    };
+    const newStatus = nextStatus[filterStatus];
+    setFilterStatus(newStatus);
+    table
+      .getColumn("status")
+      ?.setFilterValue(newStatus === "all" ? "" : newStatus);
+  };
   const table = useReactTable({
     data: filteredData,
     columns,
@@ -298,23 +313,6 @@ export function UsersTable(data) {
       rowSelection,
     },
   });
-
-  const [filterStatus, setFilterStatus] = React.useState("all");
-
-  const toggleFilterStatus = () => {
-    const nextStatus = {
-      all: "active",
-      active: "deactivated",
-      deactivated: "banned",
-      banned: "all",
-    };
-    const newStatus = nextStatus[filterStatus];
-    setFilterStatus(newStatus);
-    table
-      .getColumn("status")
-      ?.setFilterValue(newStatus === "all" ? "" : newStatus);
-  };
-
   return (
     <div className="w-full grid bg-white">
       <Toaster />
@@ -328,14 +326,23 @@ export function UsersTable(data) {
           className="max-w-sm"
         />
         <section className="ml-auto flex gap-2">
-          <Button
-            variant="outline"
-            className="ml-auto"
-            onClick={toggleFilterStatus}
-          >
-            Filter Status:{" "}
-            {filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)}
-          </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Filter Status: {filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {["all", "active", "deactivated", "banned"].map((status) => (
+                <DropdownMenuItem key={status} onClick={() => {
+                  setFilterStatus(status);
+                  table.getColumn("status")?.setFilterValue(status === "all" ? "" : status);
+                }}>
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -362,6 +369,7 @@ export function UsersTable(data) {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <AddUserDialog dialogTrigger={<Button>Add User</Button>} />
         </section>
       </div>
       <div className="rounded-md px-2">
@@ -408,7 +416,6 @@ export function UsersTable(data) {
                     <Skeleton className="h-8" />
                     <Skeleton className="h-8" />
                     <Skeleton className="h-8" />
-                    <Skeleton className="h-8" />
                   </div>
                 </TableCell>
               </TableRow>
@@ -440,6 +447,99 @@ export function UsersTable(data) {
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function TableComponent(data) {
+  const filteredData = data.data;
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const [filterStatus, setFilterStatus] = React.useState("all");
+
+  const toggleFilterStatus = () => {
+    const nextStatus = {
+      all: "active",
+      active: "deactivated",
+      deactivated: "banned",
+      banned: "all",
+    };
+    const newStatus = nextStatus[filterStatus];
+    setFilterStatus(newStatus);
+    table
+      .getColumn("status")
+      ?.setFilterValue(newStatus === "all" ? "" : newStatus);
+  };
+  const table = useReactTable({
+    data: filteredData,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
+  return (
+    <div className="rounded-md px-2">
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                <div className="grid gap-2">
+                  <Skeleton className="h-8" />
+                  <Skeleton className="h-8" />
+                  <Skeleton className="h-8" />
+                  <Skeleton className="h-8" />
+                </div>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }
